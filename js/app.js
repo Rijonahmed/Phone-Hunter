@@ -1,24 +1,35 @@
+const toggleSpinner = displayStyle => {
+  document.getElementById('spinner').style.display = displayStyle;
+}
+
+
 const searchPhone = () => {
   const searchFiled = document.getElementById('search-filed');
   const searchText = searchFiled.value;
   // console.log(searchText);
+  toggleSpinner('block');
+
 
   searchFiled.value = "";
+
+
 
   const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`
   // console.log(url);
   fetch(url)
     .then(res => res.json())
-    .then(data => displaySearchResult(data.data))
+    .then(data => displaySearchResult(data.data.slice(0, 20)))
 
 }
 
 const displaySearchResult = data => {
   const searchResult = document.getElementById('search-result');
 
+
+  // searchResult.textContent = '';
+
   data.forEach(phone => {
     console.log(phone)
-
     const div = document.createElement('div');
     div.classList.add('col');
     div.innerHTML = `
@@ -35,9 +46,9 @@ const displaySearchResult = data => {
      </div>
    `;
     searchResult.appendChild(div);
+  });
+  toggleSpinner('none');
 
-
-  })
 }
 
 
@@ -67,9 +78,10 @@ const displayPhoneDetail = phoneDetail => {
 </div>
 <div class="col-md-8">
   <div class="card-body">
+
+    <h1 class="card-title">${phoneDetail.name}</h1>
     <h5 class="card-title"><small>Brand Name : </small>${phoneDetail.brand}</h5>
-    <h5 class="card-title"><small>Model Name : </small>${phoneDetail.name}</h5>
-    <p class="card-text">Release Date : <small class="text-muted">${phoneDetail.releaseDate}</small></p>
+    <p class="card-text">Release Date : <small class="text-muted">${phoneDetail.releaseDate ? phoneDetail.releaseDate : 'Comming soon'}</small></p>
     
     <h4 class="card-title">More Features</h4>
     <h6>&rtrif; <small>ChipSet</small> : ${phoneDetail.mainFeatures.chipSet}</h6>
