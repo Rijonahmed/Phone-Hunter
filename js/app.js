@@ -19,6 +19,7 @@ const searchPhone = () => {
   fetch(url)
     .then(res => res.json())
     .then(data => displaySearchResult(data.data.slice(0, 20)))
+  // console.log(displaySearchResult(data.data));
 
 }
 
@@ -26,10 +27,16 @@ const displaySearchResult = data => {
   const searchResult = document.getElementById('search-result');
 
 
-  // searchResult.textContent = '';
+  searchResult.textContent = '';
+  if (status == false) {
+    document.getElementById('search-error').style.display = 'block';
+
+  }
+
 
   data.forEach(phone => {
     console.log(phone)
+    document.getElementById('search-error').style.display = 'none';
     const div = document.createElement('div');
     div.classList.add('col');
     div.innerHTML = `
@@ -40,7 +47,7 @@ const displaySearchResult = data => {
        <div class="card-body">
          <h5 class="card-title">${phone.phone_name}</h5>
          <p class="card-text">${phone.brand}</p>
-         <button onclick ="loadPhoneDetail('${phone.slug}')" class="btn btn-primary">More Detiles</button>
+         <a href="#"<button onclick ="loadPhoneDetail('${phone.slug}')" class="btn btn-primary">>More Detiles</button></a>
 
        </div>
      </div>
@@ -49,9 +56,11 @@ const displaySearchResult = data => {
   });
   toggleSpinner('none');
 
+
 }
 
 
+// data load for phone details
 const loadPhoneDetail = phoneId => {
 
   const url = `https://openapi.programming-hero.com/api/phone/${phoneId}`
@@ -65,15 +74,16 @@ const loadPhoneDetail = phoneId => {
 
 }
 
+// phone details information
 const displayPhoneDetail = phoneDetail => {
-  console.log(phoneDetail);
+  //console.log(phoneDetail);
   const phoneDetails = document.getElementById('phone-details');
   const div = document.createElement('div');
   div.classList.add('row');
   div.innerHTML = `
   <div class="col-md-4 ">
-  <div class="container my-3">
-  <img src="${phoneDetail.image}" class="img-fluid rounded-start" alt="...">
+  <div class="mt-5">
+  <img src="${phoneDetail.image}" class="img-fluid rounded mx-auto d-block" alt="...">
   </div>
 </div>
 <div class="col-md-8">

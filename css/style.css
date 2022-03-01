@@ -5,6 +5,7 @@ h1{
 #spinner{
   display: none;
 }
+
 #search-error{
   color: red;
   display: none;
